@@ -5,6 +5,14 @@
 **Status**: Draft
 **Input**: User description: "Mango Microservices is a full-stack e-commerce platform with 9 microservices covering authentication, product catalog, shopping cart, orders, email notifications, coupons, rewards, an API gateway, and a web frontend. Uses event-driven architecture with message bus, SQL Server persistence, and containerized deployment."
 
+## Clarifications
+
+### Session 2026-02-23
+
+- Q: What are the valid order status transitions? → A: Strict linear flow: Pending → Confirmed → Processing → Shipped → Delivered. Cancellation allowed only from Pending or Confirmed.
+- Q: What is the rewards points conversion rate? → A: 1 point per $1 spent (1:1 ratio, rounded to nearest whole number), calculated on order value before discounts.
+- Q: What are the password complexity and account lockout requirements? → A: Minimum 8 characters with at least 1 uppercase letter, 1 number, and 1 special character. Account locked for 15 minutes after 5 consecutive failed login attempts.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Browse and Purchase Products (Priority: P1)
@@ -259,7 +267,8 @@ and responses are returned to the client.
 - **FR-002**: System MUST authenticate users via email and password and issue a session token.
 - **FR-003**: System MUST support role-based access control with at least Customer and Administrator roles.
 - **FR-004**: System MUST enforce token expiration and require re-authentication after token expiry.
-- **FR-005**: System MUST hash and salt all passwords before storage.
+- **FR-005**: System MUST hash and salt all passwords before storage. Passwords MUST be at least 8 characters and contain at least 1 uppercase letter, 1 number, and 1 special character.
+- **FR-005a**: System MUST lock a user account for 15 minutes after 5 consecutive failed login attempts. The lockout message MUST NOT reveal whether the account exists.
 
 **Product Catalog**
 
@@ -286,7 +295,7 @@ and responses are returned to the client.
 
 - **FR-018**: System MUST create an order from the current cart contents when checkout is confirmed.
 - **FR-019**: Each order MUST capture line items, quantities, unit prices, applied discount, and total.
-- **FR-020**: System MUST assign an order status (Pending, Confirmed, Processing, Shipped, Delivered, Cancelled).
+- **FR-020**: System MUST assign an order status (Pending, Confirmed, Processing, Shipped, Delivered, Cancelled). Valid transitions follow a strict linear flow: Pending → Confirmed → Processing → Shipped → Delivered. Cancellation is permitted only from Pending or Confirmed status. No other transitions are allowed.
 - **FR-021**: System MUST provide authenticated customers with access to their full order history.
 - **FR-022**: System MUST integrate with a payment provider to process payments during checkout.
 
@@ -300,7 +309,7 @@ and responses are returned to the client.
 
 - **FR-026**: System MUST credit loyalty points to a customer's account upon order completion.
 - **FR-027**: System MUST display the customer's current rewards points balance on their profile.
-- **FR-028**: Points earned MUST be proportional to the order value (before discounts).
+- **FR-028**: Points earned MUST be awarded at a rate of 1 point per $1 of order value (before discounts), rounded to the nearest whole number.
 
 **API Gateway**
 
