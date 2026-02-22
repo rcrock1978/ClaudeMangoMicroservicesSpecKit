@@ -31,7 +31,7 @@
 
 ## Notes
 
-- All items pass validation. Spec is ready for `/speckit.clarify` or `/speckit.plan`.
-- Assumptions section documents all informed defaults (payment provider, inventory model, coupon limits, rewards scope, guest checkout).
-- 7 user stories cover all 9 microservices across the platform.
-- 34 functional requirements mapped to 10 success criteria.
+- All items pass validation after clarification session.
+- 5 clarifications resolved: order state machine, rewards rate, password policy, cancellation rules, product search/sort.
+- 38 functional requirements (FR-001 through FR-034 + FR-005a, FR-008a, FR-020a, FR-028 updated).
+- Spec is ready for `/speckit.plan`.

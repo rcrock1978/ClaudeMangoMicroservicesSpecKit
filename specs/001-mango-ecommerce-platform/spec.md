@@ -12,6 +12,8 @@
 - Q: What are the valid order status transitions? → A: Strict linear flow: Pending → Confirmed → Processing → Shipped → Delivered. Cancellation allowed only from Pending or Confirmed.
 - Q: What is the rewards points conversion rate? → A: 1 point per $1 spent (1:1 ratio, rounded to nearest whole number), calculated on order value before discounts.
 - Q: What are the password complexity and account lockout requirements? → A: Minimum 8 characters with at least 1 uppercase letter, 1 number, and 1 special character. Account locked for 15 minutes after 5 consecutive failed login attempts.
+- Q: Who can initiate an order cancellation? → A: Both the customer who placed the order and any administrator can cancel, but only while the order is in Pending or Confirmed status.
+- Q: What product search and sorting capabilities are required? → A: Category filtering, keyword search on product name and description, and sorting by price, name, and newest.
 
 ## User Scenarios & Testing *(mandatory)*
 
@@ -34,8 +36,9 @@ sent.
 **Acceptance Scenarios**:
 
 1. **Given** a customer is on the storefront, **When** they browse
-   products by category, **Then** they see a paginated list of
-   available products with name, price, description, and image.
+   products by category, keyword search, or sorting option, **Then**
+   they see a paginated list of matching products with name, price,
+   description, and image.
 2. **Given** a customer views a product, **When** they click
    "Add to Cart", **Then** the item is added to their persistent
    shopping cart with the correct quantity and price.
@@ -274,7 +277,8 @@ and responses are returned to the client.
 
 - **FR-006**: System MUST allow administrators to create, read, update, and delete products.
 - **FR-007**: Each product MUST have a name, description, price, category, and image URL.
-- **FR-008**: System MUST allow customers to browse products with filtering by category.
+- **FR-008**: System MUST allow customers to browse products with filtering by category and keyword search on product name and description.
+- **FR-008a**: System MUST allow customers to sort product listings by price (low-to-high, high-to-low), name (alphabetical), and newest (most recently added).
 - **FR-009**: System MUST support paginated product listings.
 
 **Shopping Cart**
@@ -296,6 +300,7 @@ and responses are returned to the client.
 - **FR-018**: System MUST create an order from the current cart contents when checkout is confirmed.
 - **FR-019**: Each order MUST capture line items, quantities, unit prices, applied discount, and total.
 - **FR-020**: System MUST assign an order status (Pending, Confirmed, Processing, Shipped, Delivered, Cancelled). Valid transitions follow a strict linear flow: Pending → Confirmed → Processing → Shipped → Delivered. Cancellation is permitted only from Pending or Confirmed status. No other transitions are allowed.
+- **FR-020a**: Both the customer who placed the order and any administrator MUST be able to cancel an order, but only while it is in Pending or Confirmed status. Orders in Processing, Shipped, or Delivered status MUST NOT be cancellable.
 - **FR-021**: System MUST provide authenticated customers with access to their full order history.
 - **FR-022**: System MUST integrate with a payment provider to process payments during checkout.
 
