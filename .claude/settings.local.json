@@ -18,7 +18,8 @@
       "Bash(fi)",
       "Bash(for service in Auth Product ShoppingCart Coupon Order Email Reward)",
       "Bash(do echo \"  ✓ src/$service/ \\(Domain, Application, Infrastructure, API\\)\")",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(dotnet add package:*)"
     ]
   }
 }
