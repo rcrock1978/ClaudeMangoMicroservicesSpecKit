@@ -63,8 +63,22 @@
 - [ ] T023 [P] Implement health check endpoints (/health/live, /health/ready) with SQL Server, RabbitMQ, and Redis checks — add `AddHealthChecks` configuration to each API's `Program.cs`
 - [ ] T024 [P] Implement API versioning (URL path /api/v1/) and Swagger/OpenAPI documentation configuration — add to each API's `Program.cs`
 - [ ] T025 Implement AutoMapper profiles base pattern — create mapping profile base class reusable per service in `src/Mango.Services.Auth.Application/Mappings/` and replicate pattern
+- [ ] T026-REMEDIAL [P] Install MediatR NuGet packages in all service Application and API projects: `MediatR`, `MediatR.Extensions.Microsoft.DependencyInjection`
+- [ ] T027-REMEDIAL Create base Command and Query abstract classes in each service's Application layer for CQRS-lite pattern in `src/Mango.Services.<Context>.Application/MediatR/BaseCommand.cs` and `BaseQuery.cs`
+- [ ] T028-REMEDIAL Create MediatR pipeline behavior for FluentValidation in each service in `src/Mango.Services.<Context>.Application/MediatR/ValidationBehavior.cs`
+- [ ] T029-REMEDIAL [P] Add MediatR registration to each service's Program.cs with `builder.Services.AddMediatR(...)` registering handlers, behaviors, and request/response types
+- [ ] T030-REMEDIAL Create `IPaymentService` interface in Order service Application layer: `src/Mango.Services.OrderAPI/Mango.Services.Order.Application/Interfaces/IPaymentService.cs` with methods CreateCheckoutSession(OrderDto) and ValidatePayment(paymentIntentId)
+- [ ] T031-REMEDIAL [P] Implement `StripePaymentService` in Order service Infrastructure layer: `src/Mango.Services.OrderAPI/Mango.Services.Order.Infrastructure/Services/StripePaymentService.cs` using Stripe SDK with checkout session creation and webhook validation
+- [ ] T032-REMEDIAL [P] Add Stripe NuGet package (`Stripe.net`) to Order service API project
+- [ ] T033-REMEDIAL Define `ProductUpdatedEvent` and `CouponUpdatedEvent` in `src/Mango.MessageBus/Events/` for cache invalidation scenarios in message-bus-events.md R9
+- [ ] T034-REMEDIAL [P] Add ProductUpdatedEvent publisher task to Product service when product is updated (in ProductRepository or ProductService update methods)
+- [ ] T035-REMEDIAL [P] Add CouponUpdatedEvent publisher task to Coupon service when coupon is updated (in CouponRepository or CouponService update methods)
+- [ ] T036-REMEDIAL Create `OrderPlacedEventConsumer` in Email service (`src/Mango.Services.EmailAPI/Mango.Services.Email.Infrastructure/Consumers/OrderPlacedEventConsumer.cs`) to send order placed notification email
+- [ ] T037-REMEDIAL Create `OrderCancelledEventConsumer` in Email service (`src/Mango.Services.EmailAPI/Mango.Services.Email.Infrastructure/Consumers/OrderCancelledEventConsumer.cs`) to send order cancellation notification email
+- [ ] T038-REMEDIAL Create `ProductUpdatedEventConsumer` in Cart service (`src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.Infrastructure/Consumers/ProductUpdatedEventConsumer.cs`) to invalidate Redis cache and re-verify cart item prices
+- [ ] T039-REMEDIAL Create `CouponUpdatedEventConsumer` in Cart service (`src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.Infrastructure/Consumers/CouponUpdatedEventConsumer.cs`) to invalidate Redis coupon validation cache
 
-**Checkpoint**: Foundation ready — all services have logging, health checks, auth middleware, messaging infrastructure, and observability. User story implementation can now begin.
+**Checkpoint**: Foundation ready — all services have logging, health checks, auth middleware, messaging infrastructure, observability, MediatR CQRS-lite pattern, payment abstraction, and complete event consumer wiring. User story implementation can now begin.
 
 ---
 
@@ -121,8 +135,9 @@
 - [ ] T055 [US1] Implement CartRepository in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.Infrastructure/Repositories/CartRepository.cs`
 - [ ] T056 [US1] Create Cart DTOs, AutoMapper profile in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.Application/DTOs/` and `Mappings/`
 - [ ] T057 [US1] Implement IProductService and ICouponService HTTP client interfaces for cross-service calls in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.Application/Interfaces/` with HttpClientFactory implementations in Infrastructure
-- [ ] T058 [US1] Implement CartController with GET /api/v1/cart, POST /api/v1/cart/upsert, DELETE /api/v1/cart/remove/{id}, POST apply-coupon, POST remove-coupon in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.API/Controllers/CartController.cs`
-- [ ] T059 [US1] Implement POST /api/v1/cart/checkout endpoint that validates cart, verifies prices with Product service, creates Stripe checkout session, publishes CartCheckoutEvent via MassTransit outbox in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.API/Controllers/CartController.cs`
+- [ ] T058 [US1] Implement CartController with GET /api/v1/cart, POST /api/v1/cart/upsert (with product availability validation — call Product service to verify IsAvailable before adding), DELETE /api/v1/cart/remove/{id}, POST apply-coupon, POST remove-coupon in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.API/Controllers/CartController.cs`
+- [ ] T058-EDGE [US1] Add price change detection and notification logic to cart upsert: if current price differs from denormalized price in CartDetails, include PriceChanged flag and old/new price in response so frontend can notify customer in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.Application/Services/CartService.cs`
+- [ ] T059 [US1] Implement POST /api/v1/cart/checkout endpoint that validates cart, verifies prices with Product service (compare denormalized prices against current prices), detects price changes and halts checkout if detected, creates Stripe checkout session via IPaymentService, publishes CartCheckoutEvent via MassTransit outbox in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.API/Controllers/CartController.cs`
 - [ ] T060 [US1] Configure Cart API Program.cs with full middleware stack plus MassTransit publisher and HttpClientFactory in `src/Mango.Services.ShoppingCartAPI/Mango.Services.ShoppingCart.API/Program.cs`
 
 **Checkpoint**: Product catalog browsable (search/filter/sort), coupons validatable, cart fully functional with checkout initiating payment. US1 core backend complete.
