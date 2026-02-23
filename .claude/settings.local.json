@@ -9,7 +9,16 @@
       "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly)",
       "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/setup-plan.ps1 -Json)",
       "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/update-agent-context.ps1 -AgentType claude)",
-      "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/check-prerequisites.ps1 -Json)"
+      "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/check-prerequisites.ps1 -Json)",
+      "Bash(powershell -ExecutionPolicy Bypass -File .specify/scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks)",
+      "Bash(pwsh -NoProfile -Command \". ./scripts/Setup-Phase1-Projects.ps1\")",
+      "Bash(then echo \"  ✓ Solution builds successfully\")",
+      "Bash(else echo \"  ✗ Build failed\")",
+      "Bash(exit:*)",
+      "Bash(fi)",
+      "Bash(for service in Auth Product ShoppingCart Coupon Order Email Reward)",
+      "Bash(do echo \"  ✓ src/$service/ \\(Domain, Application, Infrastructure, API\\)\")",
+      "Bash(done)"
     ]
   }
 }

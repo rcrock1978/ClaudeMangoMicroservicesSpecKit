@@ -1,0 +1,4 @@
+version: '3.8'
+
+# Development overrides - use for local development
+# Run: docker-compose -f docker-compose.yml -f docker-compose.override.yml up

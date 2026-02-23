@@ -1,0 +1,17 @@
+<Solution>
+  <Project Path="../tests/Mango.ContractTests/Mango.ContractTests.csproj" />
+  <Project Path="../tests/Mango.Services.Auth.IntegrationTests/Mango.Services.Auth.IntegrationTests.csproj" />
+  <Project Path="../tests/Mango.Services.Auth.UnitTests/Mango.Services.Auth.UnitTests.csproj" />
+  <Project Path="../tests/Mango.Services.Coupon.IntegrationTests/Mango.Services.Coupon.IntegrationTests.csproj" />
+  <Project Path="../tests/Mango.Services.Coupon.UnitTests/Mango.Services.Coupon.UnitTests.csproj" />
+  <Project Path="../tests/Mango.Services.Email.IntegrationTests/Mango.Services.Email.IntegrationTests.csproj" />
+  <Project Path="../tests/Mango.Services.Email.UnitTests/Mango.Services.Email.UnitTests.csproj" />
+  <Project Path="../tests/Mango.Services.Order.IntegrationTests/Mango.Services.Order.IntegrationTests.csproj" />
+  <Project Path="../tests/Mango.Services.Order.UnitTests/Mango.Services.Order.UnitTests.csproj" />
+  <Project Path="../tests/Mango.Services.Product.IntegrationTests/Mango.Services.Product.IntegrationTests.csproj" />
+  <Project Path="../tests/Mango.Services.Product.UnitTests/Mango.Services.Product.UnitTests.csproj" />
+  <Project Path="../tests/Mango.Services.Reward.IntegrationTests/Mango.Services.Reward.IntegrationTests.csproj" />
+  <Project Path="../tests/Mango.Services.Reward.UnitTests/Mango.Services.Reward.UnitTests.csproj" />
+  <Project Path="../tests/Mango.Services.ShoppingCart.IntegrationTests/Mango.Services.ShoppingCart.IntegrationTests.csproj" />
+  <Project Path="../tests/Mango.Services.ShoppingCart.UnitTests/Mango.Services.ShoppingCart.UnitTests.csproj" />
+</Solution>
