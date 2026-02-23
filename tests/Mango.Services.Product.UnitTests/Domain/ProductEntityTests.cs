@@ -1,5 +1,7 @@
 using Xunit;
 using FluentAssertions;
+using ProductEntity = Mango.Services.Product.Domain.Entities.Product;
+using CategoryEntity = Mango.Services.Product.Domain.Entities.Category;
 
 namespace Mango.Services.Product.UnitTests.Domain;
 
@@ -9,94 +11,86 @@ namespace Mango.Services.Product.UnitTests.Domain;
 /// </summary>
 public class ProductEntityTests
 {
-    private const string ProductNamespace = "Mango.Services.Product.Domain.Entities";
-
     [Fact]
     public void Product_Creation_WithValidPrice_Succeeds()
     {
-        // Arrange - Create entity using fully qualified name
-        var productType = Type.GetType($"{ProductNamespace}.Product");
-        Assert.NotNull(productType);
-
         // Act
-        dynamic product = Activator.CreateInstance(productType)!;
-        product.Name = "Laptop";
-        product.Price = 999.99m;
-        product.CategoryId = 1;
-        product.IsAvailable = true;
+        var product = new ProductEntity
+        {
+            Name = "Laptop",
+            Price = 999.99m,
+            CategoryId = 1,
+            IsAvailable = true
+        };
 
         // Assert
-        Assert.Equal("Laptop", product.Name);
-        Assert.Equal(999.99m, product.Price);
-        Assert.True(product.IsAvailable);
+        product.Name.Should().Be("Laptop");
+        product.Price.Should().Be(999.99m);
+        product.CategoryId.Should().Be(1);
+        product.IsAvailable.Should().BeTrue();
     }
 
     [Fact]
     public void Category_Creation_WithValidData_Succeeds()
     {
-        // Arrange
-        var categoryType = Type.GetType($"{ProductNamespace}.Category");
-        Assert.NotNull(categoryType);
-
         // Act
-        dynamic category = Activator.CreateInstance(categoryType)!;
-        category.Name = "Electronics";
-        category.Description = "Electronic products";
+        var category = new CategoryEntity
+        {
+            Name = "Electronics",
+            Description = "Electronic products"
+        };
 
         // Assert
-        Assert.Equal("Electronics", category.Name);
-        Assert.Equal("Electronic products", category.Description);
+        category.Name.Should().Be("Electronics");
+        category.Description.Should().Be("Electronic products");
     }
 
     [Fact]
     public void Product_CanCalculateTotal_WithQuantity()
     {
         // Arrange
-        var productType = Type.GetType($"{ProductNamespace}.Product");
-        var product = Activator.CreateInstance(productType) as dynamic;
-
-        product.Price = 100m;
+        var product = new ProductEntity { Price = 100m };
 
         // Act
         var total = product.CalculateTotal(5);
 
         // Assert
-        Assert.Equal(500m, total);
+        total.Should().Be(500m);
     }
 
     [Fact]
     public void Product_CanBePurchased_WhenAvailableAndNotDeleted()
     {
         // Arrange
-        var productType = Type.GetType($"{ProductNamespace}.Product");
-        var product = Activator.CreateInstance(productType) as dynamic;
-
-        product.Price = 100m;
-        product.IsAvailable = true;
-        product.IsDeleted = false;
+        var product = new ProductEntity
+        {
+            Price = 100m,
+            IsAvailable = true,
+            IsDeleted = false
+        };
 
         // Act
         var canBePurchased = product.CanBePurchased();
 
         // Assert
-        Assert.True(canBePurchased);
+        canBePurchased.Should().BeTrue();
     }
 
     [Fact]
     public void Product_CannotBePurchased_WhenUnavailable()
     {
         // Arrange
-        var productType = Type.GetType($"{ProductNamespace}.Product");
-        var product = Activator.CreateInstance(productType) as dynamic;
-
-        product.Price = 100m;
-        product.IsAvailable = false;
-        product.IsDeleted = false;
+        var product = new ProductEntity
+        {
+            Price = 100m,
+            IsAvailable = false,
+            IsDeleted = false
+        };
 
         // Act
         var canBePurchased = product.CanBePurchased();
 
         // Assert
-        Assert.False(canBePurchased);
+        canBePurchased.Should().BeFalse();
     }
 }
