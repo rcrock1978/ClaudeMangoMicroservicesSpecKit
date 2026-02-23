@@ -19,7 +19,8 @@
       "Bash(for service in Auth Product ShoppingCart Coupon Order Email Reward)",
       "Bash(do echo \"  ✓ src/$service/ \\(Domain, Application, Infrastructure, API\\)\")",
       "Bash(done)",
-      "Bash(dotnet add package:*)"
+      "Bash(dotnet add package:*)",
+      "Bash(pwsh -NoProfile -File scripts/Setup-Phase2-Foundation.ps1)"
     ]
   }
 }
