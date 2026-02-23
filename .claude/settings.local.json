@@ -20,7 +20,8 @@
       "Bash(do echo \"  ✓ src/$service/ \\(Domain, Application, Infrastructure, API\\)\")",
       "Bash(done)",
       "Bash(dotnet add package:*)",
-      "Bash(pwsh -NoProfile -File scripts/Setup-Phase2-Foundation.ps1)"
+      "Bash(pwsh -NoProfile -File scripts/Setup-Phase2-Foundation.ps1)",
+      "Bash(dotnet test:*)"
     ]
   }
 }
