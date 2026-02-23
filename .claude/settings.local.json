@@ -21,7 +21,9 @@
       "Bash(done)",
       "Bash(dotnet add package:*)",
       "Bash(pwsh -NoProfile -File scripts/Setup-Phase2-Foundation.ps1)",
-      "Bash(dotnet test:*)"
+      "Bash(dotnet test:*)",
+      "Bash(dotnet build:*)",
+      "Bash(dotnet add reference:*)"
     ]
   }
 }

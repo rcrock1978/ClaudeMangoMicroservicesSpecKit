@@ -1,4 +1,4 @@
-namespace Mango.Services.Auth.Domain.Entities;
+namespace Mango.Services.Product.Domain.Entities;
 
 /// <summary>
 /// Base entity for all domain models with audit tracking.
