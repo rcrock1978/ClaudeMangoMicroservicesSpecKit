@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Mango.Services.Product.Domain.Entities;
+using ProductEntity = Mango.Services.Product.Domain.Entities.Product;
+using CategoryEntity = Mango.Services.Product.Domain.Entities.Category;
 using Mango.Services.Product.Application.Interfaces;
 using Mango.Services.Product.Infrastructure.Data;
 
@@ -18,13 +19,13 @@ public class ProductRepository : IProductRepository
         _context = context;
     }
 
-    public async Task<Product?> GetByIdAsync(int id)
+    public async Task<ProductEntity?> GetByIdAsync(int id)
     {
         return await _context.Products
             .FirstOrDefaultAsync(p => p.Id == id);
     }
 
-    public async Task<(List<Product>, int)> GetAllAsync(int pageNumber, int pageSize)
+    public async Task<(List<ProductEntity>, int)> GetAllAsync(int pageNumber, int pageSize)
     {
         var query = _context.Products.AsQueryable();
 
@@ -39,7 +40,7 @@ public class ProductRepository : IProductRepository
         return (items, totalCount);
     }
 
-    public async Task<(List<Product>, int)> SearchAsync(string query, int pageNumber, int pageSize)
+    public async Task<(List<ProductEntity>, int)> SearchAsync(string query, int pageNumber, int pageSize)
     {
         if (string.IsNullOrWhiteSpace(query))
         {
@@ -62,7 +63,7 @@ public class ProductRepository : IProductRepository
         return (items, totalCount);
     }
 
-    public async Task<(List<Product>, int)> GetByCategoryAsync(int categoryId, int pageNumber, int pageSize)
+    public async Task<(List<ProductEntity>, int)> GetByCategoryAsync(int categoryId, int pageNumber, int pageSize)
     {
         var query = _context.Products
             .Where(p => p.CategoryId == categoryId);
@@ -78,7 +79,7 @@ public class ProductRepository : IProductRepository
         return (items, totalCount);
     }
 
-    public async Task AddAsync(Product product)
+    public async Task AddAsync(ProductEntity product)
     {
         product.CreatedAt = DateTime.UtcNow;
         product.UpdatedAt = DateTime.UtcNow;
@@ -87,7 +88,7 @@ public class ProductRepository : IProductRepository
         await SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(Product product)
+    public async Task UpdateAsync(ProductEntity product)
     {
         var existing = await _context.Products.FindAsync(product.Id);
         if (existing == null)
@@ -114,19 +115,19 @@ public class ProductRepository : IProductRepository
         await SaveChangesAsync();
     }
 
-    public async Task<List<Category>> GetCategoriesAsync()
+    public async Task<List<CategoryEntity>> GetCategoriesAsync()
     {
         return await _context.Categories
             .OrderBy(c => c.Name)
             .ToListAsync();
     }
 
-    public async Task<Category?> GetCategoryByIdAsync(int id)
+    public async Task<CategoryEntity?> GetCategoryByIdAsync(int id)
     {
         return await _context.Categories.FirstOrDefaultAsync(c => c.Id == id);
     }
 
-    public async Task AddCategoryAsync(Category category)
+    public async Task AddCategoryAsync(CategoryEntity category)
     {
         category.CreatedAt = DateTime.UtcNow;
         category.UpdatedAt = DateTime.UtcNow;

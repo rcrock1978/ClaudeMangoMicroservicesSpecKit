@@ -14,4 +14,9 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Mango.Services.Product.Domain\Mango.Services.Product.Domain.csproj" />
+    <ProjectReference Include="..\..\Application\Mango.Services.Product.Application\Mango.Services.Product.Application.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
-using Mango.Services.Product.Domain.Entities;
+using ProductEntity = Mango.Services.Product.Domain.Entities.Product;
+using CategoryEntity = Mango.Services.Product.Domain.Entities.Category;
 
 namespace Mango.Services.Product.Infrastructure.Data;
 
@@ -13,15 +14,15 @@ public class ProductDbContext : DbContext
     {
     }
 
-    public DbSet<Category> Categories { get; set; }
-    public DbSet<Product> Products { get; set; }
+    public DbSet<CategoryEntity> Categories { get; set; }
+    public DbSet<ProductEntity> Products { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
         // Category Configuration
-        modelBuilder.Entity<Category>(entity =>
+        modelBuilder.Entity<CategoryEntity>(entity =>
         {
             entity.HasKey(e => e.Id);
 
@@ -51,7 +52,7 @@ public class ProductDbContext : DbContext
         });
 
         // Product Configuration
-        modelBuilder.Entity<Product>(entity =>
+        modelBuilder.Entity<ProductEntity>(entity =>
         {
             entity.HasKey(e => e.Id);
 
@@ -88,7 +89,7 @@ public class ProductDbContext : DbContext
             entity.HasQueryFilter(p => !p.IsDeleted);
 
             // Foreign key
-            entity.HasOne<Category>()
+            entity.HasOne<CategoryEntity>()
                 .WithMany()
                 .HasForeignKey(e => e.CategoryId)
                 .IsRequired()

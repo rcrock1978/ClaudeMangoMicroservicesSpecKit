@@ -1,12 +1,16 @@
 {
   "version": 2,
-  "dgSpecHash": "6+66v661UKY=",
+  "dgSpecHash": "mFxaHZS9uBU=",
   "success": true,
   "projectFilePath": "C:\\Users\\LEGION\\Desktop\\CODE\\TestingClaudeCodeMangoMicroservice\\mango-microservices\\src\\Product\\Infrastructure\\Mango.Services.Product.Infrastructure\\Mango.Services.Product.Infrastructure.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\LEGION\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\fluentvalidation\\11.10.0\\fluentvalidation.11.10.0.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\mediatr\\12.4.1\\mediatr.12.4.1.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\8.0.0\\microsoft.bcl.asyncinterfaces.8.0.0.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.bcl.cryptography\\9.0.4\\microsoft.bcl.cryptography.9.0.4.nupkg.sha512",
     "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.build\\17.7.2\\microsoft.build.17.7.2.nupkg.sha512",

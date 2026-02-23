@@ -1,4 +1,4 @@
-namespace Mango.Services.Auth.Application.DTOs;
+namespace Mango.Services.Product.Application.DTOs;
 
 /// <summary>
 /// Standard API response wrapper for consistency across all endpoints.
@@ -27,7 +27,7 @@ public class ResponseDto<T>
     public string Message { get; set; } = string.Empty;
     public int? ErrorCode { get; set; }
 
-    public static ResponseDto<T> Success(T? result = null, string message = "Operation successful")
+    public static ResponseDto<T> Success(T? result = default, string message = "Operation successful")
         => new() { IsSuccess = true, Result = result, Message = message };
 
     public static ResponseDto<T> Error(string message, int? errorCode = null)
