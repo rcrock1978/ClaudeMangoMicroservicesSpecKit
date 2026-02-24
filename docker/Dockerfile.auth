@@ -8,10 +8,6 @@ COPY ["src/Auth/API/Mango.Services.Auth.API/Mango.Services.Auth.API.csproj", "sr
 COPY ["src/Auth/Application/Mango.Services.Auth.Application/Mango.Services.Auth.Application.csproj", "src/Auth/Application/Mango.Services.Auth.Application/"]
 COPY ["src/Auth/Domain/Mango.Services.Auth.Domain/Mango.Services.Auth.Domain.csproj", "src/Auth/Domain/Mango.Services.Auth.Domain/"]
 COPY ["src/Auth/Infrastructure/Mango.Services.Auth.Infrastructure/Mango.Services.Auth.Infrastructure.csproj", "src/Auth/Infrastructure/Mango.Services.Auth.Infrastructure/"]
-COPY ["src/Auth/Auth/Mango.Services.Auth.Auth/Mango.Services.Auth.Auth.csproj", "src/Auth/Auth/Mango.Services.Auth.Auth/"]
-
-# Copy MessageBus for shared events
-COPY ["src/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/"]
 
 RUN dotnet restore "src/Auth/API/Mango.Services.Auth.API/Mango.Services.Auth.API.csproj"
 

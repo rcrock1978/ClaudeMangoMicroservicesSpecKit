@@ -8,10 +8,9 @@ COPY ["src/Email/API/Mango.Services.Email.API/Mango.Services.Email.API.csproj", 
 COPY ["src/Email/Application/Mango.Services.Email.Application/Mango.Services.Email.Application.csproj", "src/Email/Application/Mango.Services.Email.Application/"]
 COPY ["src/Email/Domain/Mango.Services.Email.Domain/Mango.Services.Email.Domain.csproj", "src/Email/Domain/Mango.Services.Email.Domain/"]
 COPY ["src/Email/Infrastructure/Mango.Services.Email.Infrastructure/Mango.Services.Email.Infrastructure.csproj", "src/Email/Infrastructure/Mango.Services.Email.Infrastructure/"]
-COPY ["src/Email/Email/Mango.Services.Email.Email/Mango.Services.Email.Email.csproj", "src/Email/Email/Mango.Services.Email.Email/"]
 
 # Copy MessageBus for shared events
-COPY ["src/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/"]
+COPY ["src/Mango.MessageBus/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/Mango.MessageBus/"]
 
 RUN dotnet restore "src/Email/API/Mango.Services.Email.API/Mango.Services.Email.API.csproj"
 

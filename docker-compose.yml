@@ -1,0 +1,234 @@
+version: '3.8'
+
+services:
+  # SQL Server Database
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: mango-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      SA_PASSWORD: "YourPassword@123"
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver_data:/var/opt/mssql
+    networks:
+      - mango-network
+    healthcheck:
+      test: /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P "YourPassword@123" -Q "SELECT 1"
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # RabbitMQ Message Broker
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: mango-rabbitmq
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASS: "guest"
+    ports:
+      - "5672:5672"      # AMQP port
+      - "15672:15672"    # Management UI
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - mango-network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Product Service
+  product-service:
+    image: mango-product-service:latest
+    container_name: mango-product-service
+    build:
+      context: .
+      dockerfile: src/Product/API/Mango.Services.Product.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5001"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=Mango_Products;User Id=sa;Password=YourPassword@123;Encrypt=false;TrustServerCertificate=true;"
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__Username: "guest"
+      RabbitMq__Password: "guest"
+    ports:
+      - "5001:5001"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Shopping Cart Service
+  shopping-cart-service:
+    image: mango-shoppingcart-service:latest
+    container_name: mango-shoppingcart-service
+    build:
+      context: .
+      dockerfile: src/ShoppingCart/API/Mango.Services.ShoppingCart.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5002"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=Mango_ShoppingCart;User Id=sa;Password=YourPassword@123;Encrypt=false;TrustServerCertificate=true;"
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__Username: "guest"
+      RabbitMq__Password: "guest"
+    ports:
+      - "5002:5002"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Order Service
+  order-service:
+    image: mango-order-service:latest
+    container_name: mango-order-service
+    build:
+      context: .
+      dockerfile: src/Order/API/Mango.Services.Order.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5003"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=Mango_Order;User Id=sa;Password=YourPassword@123;Encrypt=false;TrustServerCertificate=true;"
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__Username: "guest"
+      RabbitMq__Password: "guest"
+    ports:
+      - "5003:5003"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5003/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Coupon Service
+  coupon-service:
+    image: mango-coupon-service:latest
+    container_name: mango-coupon-service
+    build:
+      context: .
+      dockerfile: src/Coupon/API/Mango.Services.Coupon.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5004"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=Mango_Coupon;User Id=sa;Password=YourPassword@123;Encrypt=false;TrustServerCertificate=true;"
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__Username: "guest"
+      RabbitMq__Password: "guest"
+    ports:
+      - "5004:5004"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5004/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Email Service
+  email-service:
+    image: mango-email-service:latest
+    container_name: mango-email-service
+    build:
+      context: .
+      dockerfile: src/Email/API/Mango.Services.Email.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5005"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=Mango_Email;User Id=sa;Password=YourPassword@123;Encrypt=false;TrustServerCertificate=true;"
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__Username: "guest"
+      RabbitMq__Password: "guest"
+      Email__SmtpServer: "smtp.mailtrap.io"
+      Email__SmtpPort: "587"
+      Email__From: "noreply@mango-ecommerce.com"
+    ports:
+      - "5005:5005"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5005/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Reward Service
+  reward-service:
+    image: mango-reward-service:latest
+    container_name: mango-reward-service
+    build:
+      context: .
+      dockerfile: src/Reward/API/Mango.Services.Reward.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5006"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=Mango_Reward;User Id=sa;Password=YourPassword@123;Encrypt=false;TrustServerCertificate=true;"
+      RabbitMq__Host: "rabbitmq"
+      RabbitMq__Port: "5672"
+      RabbitMq__Username: "guest"
+      RabbitMq__Password: "guest"
+    ports:
+      - "5006:5006"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5006/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  sqlserver_data:
+    driver: local
+  rabbitmq_data:
+    driver: local
+
+networks:
+  mango-network:
+    driver: bridge

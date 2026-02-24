@@ -8,10 +8,6 @@ COPY ["src/ShoppingCart/API/Mango.Services.ShoppingCart.API/Mango.Services.Shopp
 COPY ["src/ShoppingCart/Application/Mango.Services.ShoppingCart.Application/Mango.Services.ShoppingCart.Application.csproj", "src/ShoppingCart/Application/Mango.Services.ShoppingCart.Application/"]
 COPY ["src/ShoppingCart/Domain/Mango.Services.ShoppingCart.Domain/Mango.Services.ShoppingCart.Domain.csproj", "src/ShoppingCart/Domain/Mango.Services.ShoppingCart.Domain/"]
 COPY ["src/ShoppingCart/Infrastructure/Mango.Services.ShoppingCart.Infrastructure/Mango.Services.ShoppingCart.Infrastructure.csproj", "src/ShoppingCart/Infrastructure/Mango.Services.ShoppingCart.Infrastructure/"]
-COPY ["src/ShoppingCart/ShoppingCart/Mango.Services.ShoppingCart.ShoppingCart/Mango.Services.ShoppingCart.ShoppingCart.csproj", "src/ShoppingCart/ShoppingCart/Mango.Services.ShoppingCart.ShoppingCart/"]
-
-# Copy MessageBus for shared events
-COPY ["src/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/"]
 
 RUN dotnet restore "src/ShoppingCart/API/Mango.Services.ShoppingCart.API/Mango.Services.ShoppingCart.API.csproj"
 

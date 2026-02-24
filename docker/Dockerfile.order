@@ -8,10 +8,6 @@ COPY ["src/Order/API/Mango.Services.Order.API/Mango.Services.Order.API.csproj", 
 COPY ["src/Order/Application/Mango.Services.Order.Application/Mango.Services.Order.Application.csproj", "src/Order/Application/Mango.Services.Order.Application/"]
 COPY ["src/Order/Domain/Mango.Services.Order.Domain/Mango.Services.Order.Domain.csproj", "src/Order/Domain/Mango.Services.Order.Domain/"]
 COPY ["src/Order/Infrastructure/Mango.Services.Order.Infrastructure/Mango.Services.Order.Infrastructure.csproj", "src/Order/Infrastructure/Mango.Services.Order.Infrastructure/"]
-COPY ["src/Order/Order/Mango.Services.Order.Order/Mango.Services.Order.Order.csproj", "src/Order/Order/Mango.Services.Order.Order/"]
-
-# Copy MessageBus for shared events
-COPY ["src/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/"]
 
 RUN dotnet restore "src/Order/API/Mango.Services.Order.API/Mango.Services.Order.API.csproj"
 

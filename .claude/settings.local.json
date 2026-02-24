@@ -37,7 +37,8 @@
       "Bash(find:*)",
       "Bash(for proj in \"src/Order/Domain/Mango.Services.Order.Domain/Mango.Services.Order.Domain.csproj\" \"src/Order/Application/Mango.Services.Order.Application/Mango.Services.Order.Application.csproj\" \"src/Order/Infrastructure/Mango.Services.Order.Infrastructure/Mango.Services.Order.Infrastructure.csproj\" \"src/Order/API/Mango.Services.Order.API/Mango.Services.Order.API.csproj\" \"tests/Mango.Services.Order.UnitTests/Mango.Services.Order.UnitTests.csproj\")",
       "Bash(do echo \"Building: $proj\")",
-      "Bash(cat:*)"
+      "Bash(cat:*)",
+      "Bash(dotnet clean:*)"
     ]
   }
 }

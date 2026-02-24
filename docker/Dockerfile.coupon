@@ -8,10 +8,6 @@ COPY ["src/Coupon/API/Mango.Services.Coupon.API/Mango.Services.Coupon.API.csproj
 COPY ["src/Coupon/Application/Mango.Services.Coupon.Application/Mango.Services.Coupon.Application.csproj", "src/Coupon/Application/Mango.Services.Coupon.Application/"]
 COPY ["src/Coupon/Domain/Mango.Services.Coupon.Domain/Mango.Services.Coupon.Domain.csproj", "src/Coupon/Domain/Mango.Services.Coupon.Domain/"]
 COPY ["src/Coupon/Infrastructure/Mango.Services.Coupon.Infrastructure/Mango.Services.Coupon.Infrastructure.csproj", "src/Coupon/Infrastructure/Mango.Services.Coupon.Infrastructure/"]
-COPY ["src/Coupon/Coupon/Mango.Services.Coupon.Coupon/Mango.Services.Coupon.Coupon.csproj", "src/Coupon/Coupon/Mango.Services.Coupon.Coupon/"]
-
-# Copy MessageBus for shared events
-COPY ["src/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/"]
 
 RUN dotnet restore "src/Coupon/API/Mango.Services.Coupon.API/Mango.Services.Coupon.API.csproj"
 

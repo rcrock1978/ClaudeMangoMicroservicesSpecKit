@@ -8,10 +8,9 @@ COPY ["src/Reward/API/Mango.Services.Reward.API/Mango.Services.Reward.API.csproj
 COPY ["src/Reward/Application/Mango.Services.Reward.Application/Mango.Services.Reward.Application.csproj", "src/Reward/Application/Mango.Services.Reward.Application/"]
 COPY ["src/Reward/Domain/Mango.Services.Reward.Domain/Mango.Services.Reward.Domain.csproj", "src/Reward/Domain/Mango.Services.Reward.Domain/"]
 COPY ["src/Reward/Infrastructure/Mango.Services.Reward.Infrastructure/Mango.Services.Reward.Infrastructure.csproj", "src/Reward/Infrastructure/Mango.Services.Reward.Infrastructure/"]
-COPY ["src/Reward/Reward/Mango.Services.Reward.Reward/Mango.Services.Reward.Reward.csproj", "src/Reward/Reward/Mango.Services.Reward.Reward/"]
 
 # Copy MessageBus for shared events
-COPY ["src/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/"]
+COPY ["src/Mango.MessageBus/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/Mango.MessageBus/"]
 
 RUN dotnet restore "src/Reward/API/Mango.Services.Reward.API/Mango.Services.Reward.API.csproj"
 

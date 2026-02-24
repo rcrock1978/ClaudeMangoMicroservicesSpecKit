@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.0" />
+    <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
+    <PackageReference Include="MediatR" Version="12.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Domain\Mango.Services.Payment.Domain\Mango.Services.Payment.Domain.csproj" />
+    <ProjectReference Include="..\..\Application\Mango.Services.Payment.Application\Mango.Services.Payment.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Mango.Services.Payment.Infrastructure\Mango.Services.Payment.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
