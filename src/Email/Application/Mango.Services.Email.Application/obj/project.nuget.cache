@@ -1,8 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "YsDVaBtZRAQ=",
+  "dgSpecHash": "YUM7LwRpnQ0=",
   "success": true,
   "projectFilePath": "C:\\Users\\LEGION\\Desktop\\CODE\\TestingClaudeCodeMangoMicroservice\\mango-microservices\\src\\Email\\Application\\Mango.Services.Email.Application\\Mango.Services.Email.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\LEGION\\.nuget\\packages\\fluentvalidation\\11.9.2\\fluentvalidation.11.9.2.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\mediatr\\12.1.1\\mediatr.12.1.1.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\10.0.0\\microsoft.extensions.dependencyinjection.abstractions.10.0.0.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\10.0.0\\microsoft.extensions.logging.abstractions.10.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

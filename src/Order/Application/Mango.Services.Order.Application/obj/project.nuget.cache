@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "JvV0kKbSq+I=",
+  "dgSpecHash": "jEp2cVK10y8=",
   "success": true,
   "projectFilePath": "C:\\Users\\LEGION\\Desktop\\CODE\\TestingClaudeCodeMangoMicroservice\\mango-microservices\\src\\Order\\Application\\Mango.Services.Order.Application\\Mango.Services.Order.Application.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\LEGION\\.nuget\\packages\\mediatr\\12.4.0\\mediatr.12.4.0.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\LEGION\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }

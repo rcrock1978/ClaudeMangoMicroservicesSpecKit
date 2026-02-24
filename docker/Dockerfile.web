@@ -1,0 +1,38 @@
+# Multi-stage Dockerfile for Mango.Web
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
+WORKDIR /src
+
+# Copy csproj file and restore dependencies
+COPY ["src/Mango.Web/Mango.Web/Mango.Web.csproj", "src/Mango.Web/Mango.Web/"]
+
+RUN dotnet restore "src/Mango.Web/Mango.Web/Mango.Web.csproj"
+
+# Copy everything else and build
+COPY . .
+WORKDIR "/src/src/Mango.Web/Mango.Web"
+RUN dotnet build "Mango.Web.csproj" -c Release -o /app/build
+
+# Publish stage
+FROM build AS publish
+RUN dotnet publish "Mango.Web.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS final
+WORKDIR /app
+
+# Create non-root user
+RUN addgroup -g 1000 dotnet && \
+    adduser -u 1000 -G dotnet -s /bin/sh -D dotnet
+
+# Copy published app
+COPY --from=publish /app/publish .
+
+# Change ownership to non-root user
+RUN chown -R dotnet:dotnet /app
+USER dotnet
+
+EXPOSE 80
+EXPOSE 443
+
+ENTRYPOINT ["dotnet", "Mango.Web.dll"]

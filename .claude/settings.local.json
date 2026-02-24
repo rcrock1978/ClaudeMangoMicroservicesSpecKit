@@ -25,7 +25,19 @@
       "Bash(dotnet build:*)",
       "Bash(dotnet add reference:*)",
       "Bash(dotnet ef migrations add:*)",
-      "Bash(dotnet restore:*)"
+      "Bash(dotnet restore:*)",
+      "Bash(\"/c/Users/LEGION/Desktop/CODE/TestingClaudeCodeMangoMicroservice/mango-microservices/src/Order/Domain/Mango.Services.Order.Domain/Mango.Services.Order.Domain.csproj\":*)",
+      "Bash(\"/c/Users/LEGION/Desktop/CODE/TestingClaudeCodeMangoMicroservice/mango-microservices/src/Order/Application/Mango.Services.Order.Application/Mango.Services.Order.Application.csproj\":*)",
+      "Bash(\"/c/Users/LEGION/Desktop/CODE/TestingClaudeCodeMangoMicroservice/mango-microservices/src/Order/API/Mango.Services.Order.API/Program.cs\":*)",
+      "Bash(\"/c/Users/LEGION/Desktop/CODE/TestingClaudeCodeMangoMicroservice/mango-microservices/src/Order/API/Mango.Services.Order.API/appsettings.json\":*)",
+      "Bash(\"/c/Users/LEGION/Desktop/CODE/TestingClaudeCodeMangoMicroservice/mango-microservices/src/Order/API/Mango.Services.Order.API/Mango.Services.Order.API.csproj\":*)",
+      "Bash(\"/c/Users/LEGION/Desktop/CODE/TestingClaudeCodeMangoMicroservice/mango-microservices/tests/Mango.Services.Order.UnitTests/Mango.Services.Order.UnitTests.csproj\":*)",
+      "Bash(for proj in src/Order/Domain/*/Mango.Services.Order.Domain.csproj src/Order/Application/*/Mango.Services.Order.Application.csproj src/Order/Infrastructure/*/Mango.Services.Order.Infrastructure.csproj src/Order/API/*/Mango.Services.Order.API.csproj)",
+      "Bash(do echo \"Building $proj...\")",
+      "Bash(find:*)",
+      "Bash(for proj in \"src/Order/Domain/Mango.Services.Order.Domain/Mango.Services.Order.Domain.csproj\" \"src/Order/Application/Mango.Services.Order.Application/Mango.Services.Order.Application.csproj\" \"src/Order/Infrastructure/Mango.Services.Order.Infrastructure/Mango.Services.Order.Infrastructure.csproj\" \"src/Order/API/Mango.Services.Order.API/Mango.Services.Order.API.csproj\" \"tests/Mango.Services.Order.UnitTests/Mango.Services.Order.UnitTests.csproj\")",
+      "Bash(do echo \"Building: $proj\")",
+      "Bash(cat:*)"
     ]
   }
 }

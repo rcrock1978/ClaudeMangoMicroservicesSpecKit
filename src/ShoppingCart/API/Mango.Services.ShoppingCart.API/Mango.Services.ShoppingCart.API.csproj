@@ -8,6 +8,13 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.3" />
+    <PackageReference Include="MediatR" Version="12.4.1" />
+    <PackageReference Include="Serilog.AspNetCore" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Application\Mango.Services.ShoppingCart.Application\Mango.Services.ShoppingCart.Application.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Mango.Services.ShoppingCart.Infrastructure\Mango.Services.ShoppingCart.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

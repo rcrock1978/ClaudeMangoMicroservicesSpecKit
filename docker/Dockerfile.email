@@ -1,0 +1,45 @@
+# Multi-stage Dockerfile for Mango.Services.Email.API
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:10.0-alpine AS build
+WORKDIR /src
+
+# Copy csproj files and restore dependencies
+COPY ["src/Email/API/Mango.Services.Email.API/Mango.Services.Email.API.csproj", "src/Email/API/Mango.Services.Email.API/"]
+COPY ["src/Email/Application/Mango.Services.Email.Application/Mango.Services.Email.Application.csproj", "src/Email/Application/Mango.Services.Email.Application/"]
+COPY ["src/Email/Domain/Mango.Services.Email.Domain/Mango.Services.Email.Domain.csproj", "src/Email/Domain/Mango.Services.Email.Domain/"]
+COPY ["src/Email/Infrastructure/Mango.Services.Email.Infrastructure/Mango.Services.Email.Infrastructure.csproj", "src/Email/Infrastructure/Mango.Services.Email.Infrastructure/"]
+COPY ["src/Email/Email/Mango.Services.Email.Email/Mango.Services.Email.Email.csproj", "src/Email/Email/Mango.Services.Email.Email/"]
+
+# Copy MessageBus for shared events
+COPY ["src/Mango.MessageBus/Mango.MessageBus.csproj", "src/Mango.MessageBus/"]
+
+RUN dotnet restore "src/Email/API/Mango.Services.Email.API/Mango.Services.Email.API.csproj"
+
+# Copy everything else and build
+COPY . .
+WORKDIR "/src/src/Email/API/Mango.Services.Email.API"
+RUN dotnet build "Mango.Services.Email.API.csproj" -c Release -o /app/build
+
+# Publish stage
+FROM build AS publish
+RUN dotnet publish "Mango.Services.Email.API.csproj" -c Release -o /app/publish /p:UseAppHost=false
+
+# Runtime stage
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-alpine AS final
+WORKDIR /app
+
+# Create non-root user
+RUN addgroup -g 1000 dotnet && \
+    adduser -u 1000 -G dotnet -s /bin/sh -D dotnet
+
+# Copy published app
+COPY --from=publish /app/publish .
+
+# Change ownership to non-root user
+RUN chown -R dotnet:dotnet /app
+USER dotnet
+
+EXPOSE 80
+EXPOSE 443
+
+ENTRYPOINT ["dotnet", "Mango.Services.Email.API.dll"]

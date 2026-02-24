@@ -1,41 +1,50 @@
+using Microsoft.EntityFrameworkCore;
+using Mango.Services.Coupon.Infrastructure.Data;
+using Mango.Services.Coupon.Infrastructure.Repositories;
+using Mango.Services.Coupon.Application.Interfaces;
+using MediatR;
+using Serilog;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+// Add services to the container
+builder.Services.AddControllers();
 builder.Services.AddOpenApi();
+
+// Configure database
+var connectionString = builder.Configuration.GetConnectionString("CouponDb")
+    ?? "Server=localhost,1433;Database=Mango_Coupon;User Id=sa;Password=YourPassword123!;Encrypt=false;TrustServerCertificate=true;";
+
+builder.Services.AddDbContext<CouponDbContext>(options =>
+    options.UseSqlServer(connectionString));
+
+// Register MediatR
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(typeof(Mango.Services.Coupon.Application.MediatR.Queries.GetCouponByCodeQuery).Assembly));
+
+// Register repositories
+builder.Services.AddScoped<ICouponRepository, CouponRepository>();
+
+// Add Serilog logging
+builder.Host.UseSerilog((context, config) =>
+    config.ReadFrom.Configuration(context.Configuration));
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configure the HTTP request pipeline
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.UseDeveloperExceptionPage();
 }
 
 app.UseHttpsRedirection();
+app.UseSerilogRequestLogging();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+// Map health check endpoint
+app.MapGet("/health", () => Results.Ok("OK")).WithName("HealthCheck");
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
+// Map controllers
+app.MapControllers();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
