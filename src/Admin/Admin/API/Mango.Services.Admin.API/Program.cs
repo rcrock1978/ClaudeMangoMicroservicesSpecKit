@@ -23,21 +23,22 @@ builder.Host.UseSerilog();
 
 // Add services to the container
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-// Register DbContext
-builder.Services.AddDbContext<AdminDbContext>(options =>
+// Register DbContext - only register for non-test environments
+if (!builder.Environment.IsEnvironment("Testing"))
 {
-    var connectionString = builder.Configuration.GetConnectionString("AdminDb")
-        ?? "Server=localhost;Database=MangoAdminDb;User Id=sa;Password=Admin@123;TrustServerCertificate=true;";
-
-    options.UseSqlServer(connectionString, sqlOptions =>
+    builder.Services.AddDbContext<AdminDbContext>(options =>
     {
-        sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
-        sqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "dbo");
+        var connectionString = builder.Configuration.GetConnectionString("AdminDb")
+            ?? "Server=localhost;Database=MangoAdminDb;User Id=sa;Password=Admin@123;TrustServerCertificate=true;";
+
+        options.UseSqlServer(connectionString, sqlOptions =>
+        {
+            sqlOptions.EnableRetryOnFailure(maxRetryCount: 3);
+            sqlOptions.MigrationsHistoryTable("__EFMigrationsHistory", "dbo");
+        });
     });
-});
+}
 
 // Register Repositories
 builder.Services.AddScoped<IAdminAuditLogRepository, AdminAuditLogRepository>();
@@ -103,30 +104,29 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Migrate database on startup
-try
+// Migrate database on startup - only for relational databases (not in-memory for testing)
+if (!app.Environment.IsEnvironment("Testing"))
 {
-    using (var scope = app.Services.CreateScope())
+    try
     {
-        var dbContext = scope.ServiceProvider.GetRequiredService<AdminDbContext>();
-        await dbContext.Database.MigrateAsync();
-        Log.Information("Database migration completed successfully");
+        using (var scope = app.Services.CreateScope())
+        {
+            var dbContext = scope.ServiceProvider.GetRequiredService<AdminDbContext>();
+            await dbContext.Database.MigrateAsync();
+            Log.Information("Database migration completed successfully");
+        }
     }
-}
-catch (Exception ex)
-{
-    Log.Fatal(ex, "Database migration failed");
-    throw;
+    catch (Exception ex)
+    {
+        Log.Fatal(ex, "Database migration failed");
+        throw;
+    }
 }
 
 // Configure middleware pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin Service API v1");
-    });
+    // API documentation can be added later
 }
 
 app.UseHttpsRedirection();

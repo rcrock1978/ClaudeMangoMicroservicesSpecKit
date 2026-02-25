@@ -223,6 +223,90 @@ services:
       timeout: 5s
       retries: 5
 
+  # Admin Accounts Service
+  admin-accounts-service:
+    image: mango-admin-accounts-service:latest
+    container_name: mango-admin-accounts-api
+    build:
+      context: .
+      dockerfile: src/Admin/Accounts/API/Mango.Services.Admin.Accounts.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5094"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__AdminAccountsDb: "Server=sqlserver;Database=Mango_Admin_Accounts;User Id=sa;Password=YourPassword@123;Encrypt=false;TrustServerCertificate=true;"
+    ports:
+      - "5094:5094"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5094/api/admin/accounts/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Admin Service
+  admin-service:
+    image: mango-admin-service:latest
+    container_name: mango-admin-api
+    build:
+      context: .
+      dockerfile: src/Admin/Admin/API/Mango.Services.Admin.API/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5095"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=Mango_Admin;User Id=sa;Password=YourPassword@123;Encrypt=false;TrustServerCertificate=true;"
+      ServiceUrls__ProductService: "http://product-service:5001"
+      ServiceUrls__OrderService: "http://order-service:5003"
+      ServiceUrls__PaymentService: "http://payment-service:5004"
+      ServiceUrls__RewardService: "http://reward-service:5006"
+      ServiceUrls__CouponService: "http://coupon-service:5007"
+    ports:
+      - "5095:5095"
+    depends_on:
+      sqlserver:
+        condition: service_healthy
+      admin-accounts-service:
+        condition: service_healthy
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5095/api/admin/dashboard/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Gateway
+  api-gateway:
+    image: mango-api-gateway:latest
+    container_name: mango-api-gateway
+    build:
+      context: .
+      dockerfile: src/Mango.GatewaySolution/Mango.GatewaySolution/Dockerfile
+    environment:
+      ASPNETCORE_URLS: "http://+:5090"
+      ASPNETCORE_ENVIRONMENT: "Development"
+    ports:
+      - "5090:5090"
+    depends_on:
+      - product-service
+      - shopping-cart-service
+      - order-service
+      - payment-service
+      - coupon-service
+      - reward-service
+      - admin-accounts-service
+      - admin-service
+    networks:
+      - mango-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5090/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
 volumes:
   sqlserver_data:
     driver: local

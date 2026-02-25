@@ -14,10 +14,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, config) =>
     config.ReadFrom.Configuration(context.Configuration));
 
-// Database
-var connectionString = builder.Configuration.GetConnectionString("AdminAccountsDb");
-builder.Services.AddDbContext<AdminAccountsDbContext>(options =>
-    options.UseSqlServer(connectionString));
+// Database - only register for non-test environments
+if (!builder.Environment.IsEnvironment("Testing"))
+{
+    var connectionString = builder.Configuration.GetConnectionString("AdminAccountsDb");
+    builder.Services.AddDbContext<AdminAccountsDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
 
 // Repositories
 builder.Services.AddScoped<IAdminUserRepository, AdminUserRepository>();
@@ -33,18 +36,12 @@ builder.Services.AddMediatR(cfg =>
 // Controllers
 builder.Services.AddControllers();
 
-// Swagger
-builder.Services.AddOpenApi();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Middleware pipeline
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    // API documentation can be added later
 }
 
 // Custom middleware
